@@ -17,10 +17,19 @@ public class RunBouquetFolder {
 		for (int i = 0; i < 2; i++) {
 			bouquet.addFlower(new Chamomile(7, 5, 2, new FreshnessInteger(1)));
 		}
+
+		MarriedBouquet bouquet2 = new MarriedBouquet();
+		for (int i = 0; i < 3; i++) {
+			bouquet2.addFlower(new Rose(false, 7, 15, new FreshnessInteger(2)));
+		}
+		for (int i = 0; i < 7; i++) {
+			bouquet2.addFlower(new Chamomile(7, 9, 2, new FreshnessInteger(1)));
+		}
 		
 		bouquet.saveToFolder("bouquets" + "/" + "married_boquet_" + bouquet.hashCode());
+		bouquet2.saveToFolder("bouquets" + "/" + "married_boquet_" + bouquet2.hashCode());
 		
-		MarriedBouquet bouquet2 = 
+		MarriedBouquet bouquet3 =
 				bouquet.assembleFromFolder("bouquets" + "/" + "married_boquet_" + bouquet.hashCode());
 		
 		
