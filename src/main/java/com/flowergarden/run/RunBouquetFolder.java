@@ -26,13 +26,9 @@ public class RunBouquetFolder {
 			bouquet2.addFlower(new Chamomile(7, 9, 2, new FreshnessInteger(1)));
 		}
 		
-		bouquet.saveToFolder("bouquets" + "/" + "married_boquet_" + bouquet.hashCode());
-		bouquet2.saveToFolder("bouquets" + "/" + "married_boquet_" + bouquet2.hashCode());
-		
-		MarriedBouquet bouquet3 =
-				bouquet.assembleFromFolder("bouquets" + "/" + "married_boquet_" + bouquet.hashCode());
-		
-		
+		//bouquet.saveToFolder("bouquets" + "/" + "married_boquet_" + bouquet.hashCode());
+		//bouquet2.saveToFolder("bouquets" + "/" + "married_boquet_" + bouquet2.hashCode());
+		bouquet.assembleFromFolder("bouquets/married_boquet_356573597");
 	}
 
 }

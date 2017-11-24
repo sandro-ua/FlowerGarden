@@ -1,14 +1,16 @@
 package com.flowergarden.bouquet;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.*;
+import java.util.stream.Stream;
+
 import com.flowergarden.flowers.GeneralFlower;
+import com.flowergarden.flowers.Rose;
+import com.flowergarden.properties.FreshnessInteger;
+
 
 public class MarriedBouquet implements Bouquet<GeneralFlower> {
 
@@ -55,31 +57,70 @@ public class MarriedBouquet implements Bouquet<GeneralFlower> {
 		assemblePrice = price;
 	}
 	
-	public MarriedBouquet assembleFromFolder(String folderPath){
-		return null;
-		
+	public MarriedBouquet assembleFromFolder(String folderPath) {
+
+		File folder = new File(folderPath);
+		File[] listOfFiles = folder.listFiles();
+
+/*		for (int i = 0; i < listOfFiles.length; i++) {
+			if (listOfFiles[i].isFile()) {
+				System.out.println("File " + listOfFiles[i].getName());
+			} else if (listOfFiles[i].isDirectory()) {
+				System.out.println("Directory " + listOfFiles[i].getName());
+			}
+		}*/
+
+		String f = null;
+		String l = null;
+		String p = null;
+
+		MarriedBouquet marriedBouquet = null;
+
+		for (File file : folder.listFiles()) {
+			Scanner input = null;
+			try {
+				input = new Scanner(file);
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			}
+
+			while (input.hasNext()) {
+				String line = input.nextLine();
+
+				String[] split = line.split(":");
+
+				if (split[0] == "F:") f = split[1];
+				if (split[0] == "L:") l = split[1];
+				if (split[0] == "P:") p = split[1];
+
+				// do something with file
+				input.close();
+			}
+
+			marriedBouquet = new MarriedBouquet();
+
+			for (int i = 0; i < 5; i++) {
+				marriedBouquet.addFlower(
+						new Rose(false, Integer.valueOf(l), Integer.valueOf(p), new FreshnessInteger(Integer.valueOf(f))));
+			}
+
+
+		}
+		return marriedBouquet;
 	}
 
 	public void saveToFolder(String folderPath){
 
-/*		String[] folders = folderPath.split(File.pathSeparator);
-		for (int i = 0; i < folders.length; i++) {
-			new File(folders[i]);
-			//check and create
-		}*/
-
 		File dir = new File (folderPath);
 			if (!dir.exists()) dir.mkdirs();
 
-			//check and create
-		//}
 		for (GeneralFlower flower : flowerList) {
 			File flowerTxt = new File(folderPath,
 					flowerList.indexOf(flower) + "_" + flower.getClass().getSimpleName().toString() + ".txt");
 
-			String content = "F: " + flower.getFreshness().getFreshness() + System.lineSeparator() +
-					"L: "+ flower.getLenght() + System.lineSeparator() +
-					"P: " + flower.getPrice();
+			String content = "F:" + flower.getFreshness().getFreshness() + System.lineSeparator() +
+					"L:"+ flower.getLenght() + System.lineSeparator() +
+					"P:" + flower.getPrice();
 
 			if (!flowerTxt.exists()) try {
 				flowerTxt.createNewFile();
@@ -109,7 +150,6 @@ public class MarriedBouquet implements Bouquet<GeneralFlower> {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			//check and save to file
 		}
 	}
 }
